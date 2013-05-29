@@ -1,0 +1,190 @@
+<?php
+
+define('__BMAP_CONTAINER_ID__', 'BMapContainer');
+
+/**
+ * Implements hook_menu().
+ */
+function bmap_menu() {
+  $items = array();
+  $items['admin/config/user-interface/bmap'] = array(
+    'title' => 'Baidu Map',
+    'description' => 'Baidu map settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bmap_settings'),
+    'access arguments' => array('administer bmap'),
+    'file' => 'bmap.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bmap_permission() {
+  return array(
+    'administer bmap' => array(
+      'title' => t('Administer BMap'),
+      'description' => t('Access to administer bmap'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bmap_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'test_node_form':
+      $form['bmap'] = bmap_form_alter_item($form);
+      $form['actions']['submit']['#submit'][] = 'bmap_form_alter_submit';
+      if (isset($form['actions']['delete'])) {
+        $form['actions']['delete']['#submit'][] = 'bmap_form_alter_delete';
+      }
+      break;
+  }
+}
+
+/**
+ * Bmap form alter item.
+ * 
+ * @param $form
+ *
+ * @return $item
+ */
+function bmap_form_alter_item($form) {
+  $bmap = bmap_form_alter_item_load($form);
+  $item = array(
+    '#type' => 'fieldset',
+    '#title' => t('百度地图'),
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $item['bid'] = array(
+    '#type' => 'value',
+    '#value' => $bmap->bid,
+  );
+  $item['nid'] = array(
+    '#type' => 'value',
+    '#value' => $bmap->nid,
+  );
+  $item['type'] = array(
+    '#type' => 'radios',
+    '#title' => t('地址类别'),
+    '#options' => array('a' => t('地址'), 'c' => t('坐标')),
+    '#default_value' => $bmap->type,
+  );
+  $item['addr'] = array(
+    '#type' => 'textfield',
+    '#title' => t('地址/坐标'),
+    '#default_value' => $bmap->addr,
+  );
+  $item['title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('标题'),
+    '#default_value' => $bmap->title,
+  );
+  $item['desc'] = array(
+    '#type' => 'textarea',
+    '#title' => t('描述'),
+    '#default_value' => $bmap->desc,
+  );
+  return $item;
+}
+
+/**
+ * Load form alter node bmap info.
+ * 
+ * @param $form
+ *
+ * @return $bmap
+ */
+function bmap_form_alter_item_load($form) {
+  if (isset($form['nid']['#value'])) {
+    $bmap = bmap_load($form['nid']['#value']);
+    if (!$bmap) {
+      $bmap = bmap_init_empty($form['nid']['#value']);
+    }
+  }
+  else {
+    $bmap = bmap_init_empty();
+  }
+  return $bmap;
+}
+
+function bmap_init_empty($nid = NULL) {
+  $bmap = new stdClass();
+  $bmap->bid = NULL;
+  $bmap->nid = $nid;
+  $bmap->type = 't';
+  $bmap->addr = '';
+  $bmap->title = '';
+  $bmap->desc = '';
+  return $bmap;
+}
+
+function bmap_form_alter_submit($form, &$form_state) {
+
+  dpm($form);
+  dpm($form_state);
+  // $form_state['values']['nid'];
+  // $bmap = array();
+  // bmap_save();
+}
+
+function bmap_form_alter_delete($form, &$form_state) {
+
+}
+
+function bmap_fields() {
+  return array('bid', 'nid', 'type', 'addr', 'title', 'desc');
+}
+
+function bmap_load($bid) {
+  $fields = bmap_fields();
+  $qy = db_select('bmap', 'b')->condition('b.bid', $bid)->fields('b', $fields);
+  return $qy->execute()->fetchObject();
+
+}
+
+function bmap_load_by_nid($nid) {
+  $fields = bmap_fields();
+  $qy = db_select('bmap', 'b')->condition('b.nid', $nid)->fields('b', $fields);
+  return $qy->execute()->fetchObject();
+}
+
+function bmap_save($bmap) {
+  // update db
+  if () {
+
+  }
+  else {
+
+  }
+  db_merge('bmap')
+      ->key(array('nid' => $nid))
+      ->fields(array('uid' => $uid, 'rid' => $rid))
+      ->execute();
+  // update cache
+}
+
+function bmap_create() {
+  db_create()
+}
+
+function bmap_update($bmap) {
+  $transaction = db_transaction();
+  try {
+    db_update('bmap')->condition('nid', $bmap->nid)
+      db_update('lc_word_review_data')
+        ->fields(array('status' => 1))
+        ->condition('did', $cond_min_did)
+        ->execute();
+  }
+  catch (Exception $e) {
+    $transaction->rollback('Bmap', $e->getMessage(), array(), WATCHDOG_ERROR);
+    return FALSE;
+  }
+}

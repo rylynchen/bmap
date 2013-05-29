@@ -1,0 +1,6 @@
+name = Bmap
+description = Baidu map module.
+core = 7.x
+package = LBS
+version = "7.x-1.0"
+project = "bmap"

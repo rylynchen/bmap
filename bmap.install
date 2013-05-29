@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * Implemenation of hook_schema().
+ */
+function bmap_schema() {
+  $schema['bmap'] = array(
+    'description' => 'Baidu map.',
+    'fields' => array(
+      'bid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique bmap ID.',
+      ),
+      'nid' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => "Relate {node}.nid.",
+      ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => "Bmap address type.",
+      ),
+      'addr' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => "Bmap address value.",
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => "Target title.",
+      ),
+      'desc' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => "Target description.",
+      ),
+    ),
+    'primary key' => array('bid'),
+    'indexes' => array(
+      'nid' => array('nid'),
+    ),
+  );
+  return $schema;
+}
