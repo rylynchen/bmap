@@ -1,6 +1,112 @@
 <?php
 
 /**
+ * Implemenation of hook_install().
+ */
+function bmap_install() {
+  field_cache_clear();
+  // add field name
+  $field_address = field_info_field('field_bmap_address');
+  if (empty($field_address)) {
+    $field_address = array(
+      'field_name' => 'field_bmap_address',
+      'type' => 'text',
+    );
+    $field_address = field_create_field($field_address);
+  }
+  $instance_address = field_info_instance('bmap', 'field_bmap_address', 'bmap');
+  if (empty($instance_address)) {
+    $instance_address = array(
+        'bundle' => 'bmap', 
+        'default_value' => NULL,
+        'deleted' => '0',
+        'description' => '',
+        'field_name' => 'field_bmap_address', 
+        'entity_type' => 'bmap', 
+        'label' => 'Addess', 
+        'required' => 0,
+    );
+    $instance_address = field_create_instance($instance_address);
+  }
+  // add field name
+  $field_name = field_info_field('field_bmap_name');
+  if (empty($field_name)) {
+    $field_name = array(
+      'field_name' => 'field_bmap_name',
+      'type' => 'text',
+    );
+    $field_name = field_create_field($field_name);
+  }
+  $instance_name = field_info_instance('bmap', 'field_bmap_name', 'bmap');
+  if (empty($instance_name)) {
+    $instance_name = array(
+        'bundle' => 'bmap', 
+        'default_value' => NULL,
+        'deleted' => '0',
+        'description' => '',
+        'field_name' => 'field_bmap_name', 
+        'entity_type' => 'bmap', 
+        'label' => 'Name', 
+        'required' => 0,
+    );
+    $instance_name = field_create_instance($instance_name);
+  }
+  // add field description
+  $field_description = field_info_field('field_bmap_description');
+  if (empty($field_description)) {
+    $field_description = array(
+      'field_name' => 'field_bmap_description',
+      'type' => 'text_long',
+    );
+    $field_description = field_create_field($field_description);
+  }
+  $field_description = field_info_instance('bmap', 'field_bmap_description', 'bmap');
+  if (empty($instance_description)) {
+    $instance_description = array(
+        'bundle' => 'bmap', 
+        'default_value' => NULL,
+        'deleted' => '0',
+        'description' => '',
+        'field_name' => 'field_bmap_description', 
+        'entity_type' => 'bmap', 
+        'label' => 'Description', 
+        'required' => 0,
+    );
+    $instance_description = field_create_instance($instance_description);
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bmap_uninstall() {
+  $instance_address = field_info_instance('bmap', 'field_bmap_address', 'bmap');
+  if (!empty($instance_address)) {
+    field_delete_instance($instance_address);
+  }
+  $field_address = field_info_field('field_bmap_address');
+  if ($field_address) {
+    field_delete_field('field_bmap_address');
+  }
+  $instance_name = field_info_instance('bmap', 'field_bmap_name', 'bmap');
+  if (!empty($instance_name)) {
+    field_delete_instance($instance_name);
+  }
+  $field_name = field_info_field('field_bmap_name');
+  if ($field_name) {
+    field_delete_field('field_bmap_name');
+  }
+  $instance_description = field_info_instance('bmap', 'field_bmap_description', 'bmap');
+  if (!empty($instance_description)) {
+    field_delete_instance($instance_description);
+  }
+  $field_description = field_info_field('field_bmap_description');
+  if ($field_description) {
+    field_delete_field('field_bmap_description');
+  }
+}
+
+/**
  * Implemenation of hook_schema().
  */
 function bmap_schema() {
@@ -12,41 +118,20 @@ function bmap_schema() {
         'not null' => TRUE,
         'description' => 'Primary Key: Unique bmap ID.',
       ),
-      'nid' => array(
-        'type' => 'varchar',
-        'length' => 255,
+      'x' => array(
+        'type' => 'float',
         'not null' => TRUE,
-        'description' => "Relate {node}.nid.",
+        'size' => 'big',
+        'description' => 'The coordinate x.',
       ),
-      'type' => array(
-        'type' => 'varchar',
-        'length' => 255,
+      'y' => array(
+        'type' => 'float',
         'not null' => TRUE,
-        'description' => "Bmap address type.",
-      ),
-      'addr' => array(
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => TRUE,
-        'description' => "Bmap address value.",
-      ),
-      'title' => array(
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => TRUE,
-        'description' => "Target title.",
-      ),
-      'desc' => array(
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => TRUE,
-        'description' => "Target description.",
+        'size' => 'big',
+        'description' => 'The coordinate y.',
       ),
     ),
     'primary key' => array('bid'),
-    'indexes' => array(
-      'nid' => array('nid'),
-    ),
   );
   return $schema;
 }
