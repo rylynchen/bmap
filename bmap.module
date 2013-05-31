@@ -8,8 +8,8 @@ define('__BMAP_CONTAINER_ID__', 'BMapContainer');
 function bmap_menu() {
   $items = array();
   $items['admin/config/user-interface/bmap'] = array(
-    'title' => 'Baidu Map',
-    'description' => 'Baidu map settings',
+    'title' => 'Bmap',
+    'description' => 'Bmap settings',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bmap_settings'),
     'access arguments' => array('administer bmap'),
@@ -18,7 +18,7 @@ function bmap_menu() {
   );
   $items['admin/structure/bmap'] = array(
     'title' => 'Bmap',
-    'description' => 'Manage bmap',
+    'description' => 'Manage Bmap',
     'page callback' => 'bmap_manage',
     'access arguments' => array('administer bmap'),
     'file' => 'bmap.admin.inc',
