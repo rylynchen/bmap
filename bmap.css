@@ -9,3 +9,4 @@
 #BMapContainer .BMapLib_SearchInfoWindow .iw_bt, 
 #BMapContainer .BMapLib_SearchInfoWindow .iw_bt_down, 
 #BMapContainer .BMapLib_SearchInfoWindow .iw_bt_over {font-size: 15px;}
+#BMapContainer .BMap_bubble_content table {margin:0;border:0;}

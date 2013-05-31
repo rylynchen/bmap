@@ -31,8 +31,10 @@ function bmap_settings() {
  * Display bmap admin page
  */
 function bmap_manage() {
-  $build['#markup'] = t('Bmap manage');
-  return $build;
+  // $build['#markup'] = views_embed_view('bmaps', 'default');
+  $view = views_get_view('bmaps', 'default');
+  $view->override_url = $_GET['q'];
+  return $view->preview();
 }
 
 /**
