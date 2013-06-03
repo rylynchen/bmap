@@ -26,7 +26,7 @@ function bmap_menu() {
   $items['bmap/add'] = array(
     'title' => 'Add Bmap',
     'page callback' => 'bmap_add',
-    'access arguments' => array('administer bmap'),
+    'access arguments' => array('add bmap'),
     'file' => 'bmap.admin.inc',
   );
   $items['admin/structure/bmap/list'] = array(
@@ -38,7 +38,7 @@ function bmap_menu() {
     'title' => 'Bmap',
     'page callback' => 'bmap_page_view',
     'page arguments' => array(1),
-    'access arguments' => array('administer bmap'),
+    'access arguments' => array('view bmap'),
     'file' => 'bmap.admin.inc',
   );
   $items['bmap/%bmap/view'] = array(
@@ -50,7 +50,7 @@ function bmap_menu() {
     'title' => 'Edit',
     'page callback' => 'bmap_page_edit',
     'page arguments' => array(1),
-    'access arguments' => array('administer bmap'),
+    'access arguments' => array('edit bmap'),
     'weight' => 0,
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
@@ -60,7 +60,7 @@ function bmap_menu() {
     'title' => 'Delete',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bmap_delete_confirm_form', 1),
-    'access arguments' => array('administer bmap'),
+    'access arguments' => array('delete bmap'),
     'weight' => 1,
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_INLINE,
@@ -76,7 +76,23 @@ function bmap_permission() {
   return array(
     'administer bmap' => array(
       'title' => t('Administer Bmaps'),
-      'description' => t('Edit and view all entitiy bmaps.'),
+      'description' => t('Administer entitiy bmaps.'),
+    ),
+    'add bmap' => array(
+      'title' => t('Add Bmap'),
+      'description' => t('Add entitiy bmaps.'),
+    ),
+    'edit bmap' => array(
+      'title' => t('Edit All Bmaps'),
+      'description' => t('Edit all entitiy bmaps.'),
+    ),
+    'view bmap' => array(
+      'title' => t('View All Bmaps'),
+      'description' => t('View entitiy bmaps.'),
+    ),
+    'delete bmap' => array(
+      'title' => t('Delete All Bmaps'),
+      'description' => t('Delete all entitiy bmaps.'),
     ),
   );
 }
@@ -159,6 +175,18 @@ function bmap_views_api() {
   return array(
     'api' => 3,
     'path' => drupal_get_path('module', 'bmap') . '/views',
+  );
+}
+
+/**
+ * Adds our theme specificiations to the Theme Registry.
+ */
+function bmap_theme($existing, $type, $theme, $path) {
+  return array(
+    'bmap' => array(
+      'variables' => array('element' => null),
+      'template' => 'bmap'
+    ),
   );
 }
 
@@ -320,4 +348,18 @@ class BmapController extends EntityAPIController {
     $bmap = parent::create($values);
     return $bmap;
   }
+}
+
+/**
+ * Load JS, CSS
+ */
+function bmap_load_js_css() {
+  drupal_add_library('system', 'drupal.ajax');
+  $path = drupal_get_path('module', 'bmap');
+  drupal_add_css('http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css', 'external');
+  drupal_add_css($path.'/bmap.css');
+  drupal_add_js('http://api.map.baidu.com/api?v=1.5&ak='.variable_get('bmap_key', ''), 'external');
+  drupal_add_js('http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js', 'external');
+  drupal_add_js(array('bmap' => array('container' => __BMAP_CONTAINER_ID__)), 'setting');
+  drupal_add_js($path.'/bmap.js', array('scope' => 'footer'));
 }

@@ -15,7 +15,7 @@ class bmap_handler_edit_link_field extends bmap_handler_link_field {
 
   function render($values) {
     // Check access
-    if (!user_access('administer bmap')) {
+    if (!user_access('edit bmap')) {
       return;
     }
     $text = !empty($this->options['text']) ? $this->options['text'] : t('edit');

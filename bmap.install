@@ -104,6 +104,9 @@ function bmap_uninstall() {
   if ($field_description) {
     field_delete_field('field_bmap_description');
   }
+  variable_del('bmap_key');
+  variable_del('bmap_preview_width');
+  variable_del('bmap_preview_height');
 }
 
 /**
