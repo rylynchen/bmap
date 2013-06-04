@@ -74,6 +74,7 @@ function bmap_install() {
     );
     $instance_description = field_create_instance($instance_description);
   }
+  drupal_set_message(t('You need to <a href="/admin/config/user-interface/bmap">set Baidu map API key</a> .'));
 }
 
 /**
