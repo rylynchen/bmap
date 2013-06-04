@@ -5,6 +5,7 @@
   <?php echo render($content['field_bmap_address']); ?>
   <?php echo render($content['field_bmap_name']); ?>
   <?php echo render($content['field_bmap_description']); ?>
+  <div class="field"><div class="field-label">Map:</div></div>
   <div style="width:<?php echo variable_get('bmap_preview_width', '100%'); ?>;height:<?php echo variable_get('bmap_preview_height', '500px'); ?> ;border:#ccc solid 1px;" id="<?php echo __BMAP_CONTAINER_ID__; ?>"></div>
   <?php
     $data = array(
