@@ -29,7 +29,6 @@
 		    map.addControl(ctrl_sca);
   		},
       getXyByAddress: function(address){
-        console.log(address);
         var _this = this;
         var myGeo = new BMap.Geocoder();
         myGeo.getPoint(address, function(point){

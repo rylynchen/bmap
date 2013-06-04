@@ -13,6 +13,7 @@ function bmap_views_default_views() {
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['use_more_always'] = FALSE;
@@ -24,12 +25,50 @@ function bmap_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'bid' => 'bid',
+    'field_bmap_name' => 'field_bmap_name',
+    'field_bmap_address' => 'field_bmap_address',
+    'x' => 'x',
+    'y' => 'y',
+    'operations' => 'operations',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'bid' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_bmap_name' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_bmap_address' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'x' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'y' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'operations' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -39,6 +78,7 @@ function bmap_views_default_views() {
   $handler->display->display_options['fields']['bid']['id'] = 'bid';
   $handler->display->display_options['fields']['bid']['table'] = 'bmap';
   $handler->display->display_options['fields']['bid']['field'] = 'bid';
+  $handler->display->display_options['fields']['bid']['label'] = 'BID';
   /* Field: Bmap: Name */
   $handler->display->display_options['fields']['field_bmap_name']['id'] = 'field_bmap_name';
   $handler->display->display_options['fields']['field_bmap_name']['table'] = 'field_data_field_bmap_name';
