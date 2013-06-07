@@ -184,8 +184,12 @@ function bmap_views_api() {
 function bmap_theme($existing, $type, $theme, $path) {
   return array(
     'bmap' => array(
-      'variables' => array('element' => null),
+      'variables' => array('element' => NULL, 'bmap' => NULL),
       'template' => 'bmap'
+    ),
+    'bmap_field_map' => array(
+      'variables' => array('points' => NULL),
+      'template' => 'bmap_field_map'
     ),
   );
 }
